@@ -1,107 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Face Tracker</title>
 
-<style>
-body{
-    margin:0;
-    overflow:hidden;
-    background:#111;
-}
+<link rel="stylesheet" href="style.css">
 
-video,canvas{
-    position:absolute;
-    width:100vw;
-    height:100vh;
-    object-fit:cover;
-}
-
-canvas{
-    pointer-events:none;
-}
-</style>
+<script type="module" src="script.js"></script>
 </head>
 <body>
 
-<video id="video" autoplay playsinline muted></video>
-<canvas id="canvas"></canvas>
-
-<script type="module">
-
-import vision from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest";
-
-const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-const stream = await navigator.mediaDevices.getUserMedia({
-    video:{
-        width:640,
-        height:480,
-        frameRate:60
-    }
-});
-
-video.srcObject = stream;
-
-await video.play();
-
-canvas.width = video.videoWidth;
-canvas.height = video.videoHeight;
-
-const fileset = await vision.FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
-);
-
-const detector = await vision.FaceDetector.createFromOptions(fileset,{
-    baseOptions:{
-        modelAssetPath:"https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite"
-    },
-
-    runningMode:"VIDEO",
-
-    minDetectionConfidence:0.5,
-
-    maxResults:5      // Limit to 5 faces
-});
-
-function render(){
-
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    const now = performance.now();
-
-    const result = detector.detectForVideo(video,now);
-
-    if(result.detections){
-
-        for(const face of result.detections){
-
-            const box = face.boundingBox;
-
-            ctx.strokeStyle="lime";
-            ctx.lineWidth=3;
-
-            ctx.strokeRect(
-                box.originX,
-                box.originY,
-                box.width,
-                box.height
-            );
-
-        }
-
-    }
-
-    requestAnimationFrame(render);
-
-}
-
-render();
-
-</script>
+<div id="container">
+    <video id="video" autoplay playsinline muted></video>
+    <canvas id="canvas"></canvas>
+</div>
 
 </body>
 </html>
