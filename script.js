@@ -2,6 +2,8 @@
 // Face Tracker Main Script
 // =====================================================
 
+import "./tracker.js";
+
 const vrButton = document.getElementById("vrButton");
 
 const vrView = document.getElementById("vrView");
@@ -31,9 +33,5 @@ vrButton.onclick = () => {
     }
 
 };
-
-import "./tracker.js";
-
-// Future startup code can go here.
 
 console.log("Face Tracker Loaded");
