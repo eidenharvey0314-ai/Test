@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Async Threshold Test</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>AI Camera Assistant</title>
 
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://unpkg.com/three/build/three.module.js"
-        }
-    }
-    </script>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="overlay">
-        <h1>ASYNC THRESHOLD DIVISION</h1>
-        <p>Press Click to Enter</p>
-        <p>Press M to Open Threshold</p>
-    </div>
 
-    <div id="vhs"></div>
+<video id="camera" autoplay playsinline></video>
 
-    <script type="module" src="game.js"></script>
+<div class="overlay">
+
+<h1>AI Assistant</h1>
+
+<div id="chat"></div>
+
+<button id="talk">
+🎤 Talk
+</button>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
