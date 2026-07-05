@@ -9,7 +9,7 @@ app.use(express.static("."));
 
 const client = new OpenAI({
 
-apiKey:"YOUR_API_KEY"
+apiKey:"GPT OSS 120B"
 
 });
 
