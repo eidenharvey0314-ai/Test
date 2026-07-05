@@ -2,28 +2,106 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AI Camera Assistant</title>
+<title>Face Tracker</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:#111;
+}
+
+video,canvas{
+    position:absolute;
+    width:100vw;
+    height:100vh;
+    object-fit:cover;
+}
+
+canvas{
+    pointer-events:none;
+}
+</style>
 </head>
-
 <body>
 
-<video id="camera" autoplay playsinline></video>
+<video id="video" autoplay playsinline muted></video>
+<canvas id="canvas"></canvas>
 
-<div class="overlay">
+<script type="module">
 
-<h1>AI Assistant</h1>
+import vision from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest";
 
-<div id="chat"></div>
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-<button id="talk">
-🎤 Talk
-</button>
+const stream = await navigator.mediaDevices.getUserMedia({
+    video:{
+        width:640,
+        height:480,
+        frameRate:60
+    }
+});
 
-</div>
+video.srcObject = stream;
 
-<script src="script.js"></script>
+await video.play();
+
+canvas.width = video.videoWidth;
+canvas.height = video.videoHeight;
+
+const fileset = await vision.FilesetResolver.forVisionTasks(
+    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
+);
+
+const detector = await vision.FaceDetector.createFromOptions(fileset,{
+    baseOptions:{
+        modelAssetPath:"https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite"
+    },
+
+    runningMode:"VIDEO",
+
+    minDetectionConfidence:0.5,
+
+    maxResults:5      // Limit to 5 faces
+});
+
+function render(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const now = performance.now();
+
+    const result = detector.detectForVideo(video,now);
+
+    if(result.detections){
+
+        for(const face of result.detections){
+
+            const box = face.boundingBox;
+
+            ctx.strokeStyle="lime";
+            ctx.lineWidth=3;
+
+            ctx.strokeRect(
+                box.originX,
+                box.originY,
+                box.width,
+                box.height
+            );
+
+        }
+
+    }
+
+    requestAnimationFrame(render);
+
+}
+
+render();
+
+</script>
 
 </body>
 </html>
