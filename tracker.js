@@ -25,17 +25,24 @@ async function setupCamera(){
 
     const stream = await navigator.mediaDevices.getUserMedia({
 
-        video:{
-            width:640,
-            height:480,
-            facingMode: isMobile ? "environment" : "user"
-        },
+    video:{
+        width:640,
+        height:480,
+        facingMode: isMobile ? "environment" : "user"
+    },
 
-        audio:false
+    audio:false
 
-    });
+});
 
-    video.srcObject = stream;
+// VR videos
+const leftVideo = document.getElementById("leftVideo");
+const rightVideo = document.getElementById("rightVideo");
+
+video.srcObject = stream;
+
+if(leftVideo) leftVideo.srcObject = stream;
+if(rightVideo) rightVideo.srcObject = stream;
 
     return new Promise(resolve=>{
 
