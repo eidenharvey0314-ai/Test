@@ -1,20 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Face Tracker</title>
 
 <link rel="stylesheet" href="style.css">
 
-<script type="module" src="script.js"></script>
 </head>
 <body>
 
-<div id="container">
-    <video id="video" autoplay playsinline muted></video>
-    <canvas id="canvas"></canvas>
+<div id="app">
+
+    <video
+        id="video"
+        autoplay
+        muted
+        playsinline>
+    </video>
+
+    <canvas id="overlay"></canvas>
+
+    <!-- Floating cards appear here -->
+    <div id="faceContainer"></div>
+
 </div>
+
+<!-- Register Popup -->
+<div id="popup" class="hidden">
+
+    <div class="popupCard">
+
+        <h2>Register Person</h2>
+
+        <label>Name</label>
+        <input
+            id="nameInput"
+            type="text"
+            maxlength="40"
+        >
+
+        <label>Age</label>
+        <input
+            id="ageInput"
+            type="number"
+            min="0"
+            max="120"
+        >
+
+        <label>Additional Info (Optional)</label>
+
+        <textarea
+            id="infoInput"
+            rows="4"
+        ></textarea>
+
+        <div class="buttons">
+
+            <button id="cancelBtn">
+                Cancel
+            </button>
+
+            <button id="saveBtn">
+                Save
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MediaPipe -->
+
+<script type="module">
+
+import {
+FilesetResolver,
+FaceDetector
+}
+from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest";
+
+window.FilesetResolver = FilesetResolver;
+window.FaceDetector = FaceDetector;
+
+</script>
+
+<script type="module" src="storage.js"></script>
+<script type="module" src="ui.js"></script>
+<script type="module" src="tracker.js"></script>
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
