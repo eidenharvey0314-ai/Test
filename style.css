@@ -248,6 +248,32 @@ body{
 
 }
 
+#vrButton{
+
+    position:fixed;
+
+    bottom:15px;
+
+    right:15px;
+
+    width:40px;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:rgba(40,40,40,.8);
+
+    color:white;
+
+    cursor:pointer;
+
+    z-index:1000;
+
+}
+
 #saveBtn{
 
     background:#3c84ff;
